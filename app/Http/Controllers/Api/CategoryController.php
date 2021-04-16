@@ -21,8 +21,6 @@ class CategoryController extends Controller
 
     public function search(CategoryRequest $request)
     {
-        $sessions = Session::put("cart.products", [['id' => 1, 'item' => 1]]);
-        dd($sessions);
         return new CategoryCollection($this->categoryRepository->search($request->searchFilter()));
     }
 

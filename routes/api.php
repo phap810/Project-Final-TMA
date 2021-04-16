@@ -84,5 +84,5 @@ Route::namespace('Api')->group(function(){
     Route::get('update-cart/{id}', 'CartController@update')->name('cart.update');
     Route::get('remove/{id}', 'CartController@remove')->name('cart.remove');
     Route::get('clear', 'CartController@clear')->name('cart.clear');
-    //Route::get('view-cart', 'CartController@view')->name('cart.view');
+    Route::get('view-cart', 'CartController@view')->name('cart.view');
 });

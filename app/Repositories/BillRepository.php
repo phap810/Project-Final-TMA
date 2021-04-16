@@ -15,28 +15,27 @@ class BillRepository
     {
         return Bill::create([
             'customer_id' => $customer_id,
-            'total'       => '30000',//$cart->total
+            'total'       => $cart['total_price'],
             'payment'     => $inputs['payment'],
             'dateorder'   => date('Y-m-d'),
             'note'        => $inputs['note'],
             'status'      => 1,
         ]);
     }
-    public function storeBillDetail($bill_id, $cart, $idPSC)
+    public function storeBillDetail($bill_id, $PSCdata, $rowCart)
     {
         return BillDetail::create([
-            'id_bill' => $bill_id,
-            'id_product' => $cart['id'],
-            'id_product_size_color' =>  $idPSC,
-            'amount' => $cart['quantity'],
-            'price' => $cart['price']/$value['quantity']
+            'id_bill'               => $bill_id,
+            'id_product_size_color' => $PSCdata[0]['id'],
+            'amount'                => $rowCart['quantity'],
+            'price'                 => $rowCart['price']
         ]);
     }
-    public function showPSC($cart)
+    public function showPSC($rowCart)
     {
-        return ProductSizeColor::where('product_id', $cart['id'])
-            ->where('size_id', $cart['size_id'])
-            ->where('color_id', $cart['color_id'])
-            ->get();
+        return ProductSizeColor::
+        where('product_id', $rowCart['id'])
+        ->where('size_id', $rowCart['size_id'])
+        ->where('color_id', $rowCart['color_id'])->get();
     }
 }

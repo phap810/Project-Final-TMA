@@ -22,50 +22,30 @@ class BillController extends Controller
     {
         $this->billRepository = $billRepository;
         $this->customerRepository = $customerRepository;
-
     }
     public function store(CustomerRequest $customerRequest, BillRequest $billRequest)
     {
-        // $a = Session::get('cart');
+        $items = session('cart');
+        // $a = $items['229125141']['id'];
         // dd($a);
+        $totalPrice      = 0;
+        $totalQuantity   = 0;
+        foreach($items as $rowCart){
+            $totalPrice      += $rowCart['price']*$rowCart['quantity'];
+            $totalQuantity   += $rowCart['quantity'];
+        }
         $cart = [
-            'items' => [
-                229 => [
-                    "id" => 229,
-                    "name"=> "Dép Nike",
-                    "price"=> 100000,
-                    "img"=> "1245428979.png",
-                    "size_id"=> 125,
-                    "size"=> 39,
-                    "color_id"=> 141,
-                    "color"=> "Xanh",
-                    "quantity"=> 2
-                ],
-                228 => [
-                    "id" => 228,
-                    "name"=> "Giày thể thao nam",
-                    "price"=> 30000,
-                    "img"=> "118294873.png",
-                    "size_id"=> 125,
-                    "size"=> 39,
-                    "color_id"=> 140,
-                    "color"=> "Xám",
-                    "quantity"=> 2
-                ]
-                ],
-            'total_price' => 260000,
-            'total_quantity' => 4
+            'items' => $items,
+            'total_price'=> $totalPrice,
+            'total_quantity' => $totalQuantity
         ];
-        // $productPSC = $this->billRepository->showPSC($cart);
-        // $idPSC = $productPSC[0]['id'];
         $customer = new BaseResource($this->customerRepository->store($customerRequest->storeFilter()));
-        $customer_id = $customer->id;
         if($customer ==true){
-            $bill = new BaseResource($this->billRepository->store($billRequest->storeFilter(), $customer_id, $cart));
-            $bill_id = $bill->id;
+            $bill = new BaseResource($this->billRepository->store($billRequest->storeFilter(), $customer->id, $cart));
             if($bill == true){
-                foreach($cart['items'] as $key => $value){
-                    $billDetail = new BaseResource($this->billRepository->storeBillDetail($bill_id, $cart, $idPSC));   
+                foreach($cart['items'] as $rowCart){
+                    $PSCdata = $this->billRepository->showPSC($rowCart);
+                    $this->billRepository->storeBillDetail($bill->id, $PSCdata, $rowCart);   
                 }
                 return $bill;
             }

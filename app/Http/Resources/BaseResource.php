@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
 use Config;
 
 class BaseResource extends JsonResource
@@ -37,5 +38,27 @@ class BaseResource extends JsonResource
         return [
             'data' => null
         ];
+    }
+
+    //note
+    public function sendResponse($result, $message)
+    {
+        $response = [
+            'success' => true,
+            'data'    => $result,
+            'message' => $message,
+        ];
+        return response()->json($response, 200);
+    }
+    public function sendError($error, $errorMessages = [], $code = 500)
+    {
+        $response = [
+            'success' => false,
+            'message' => $error,
+        ];
+        if (!empty($errorMessages)) {
+            $response['data'] = $errorMessages;
+        }
+        return response()->json($response, $code);
     }
 }

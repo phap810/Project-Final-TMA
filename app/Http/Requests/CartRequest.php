@@ -19,7 +19,7 @@ class CartRequest extends FormRequest
         }
     }
     
-    //add Cart
+    //Add Cart
     public function storeRules(): array
     {
         return [
@@ -39,20 +39,18 @@ class CartRequest extends FormRequest
         ]);
     }
 
-    //Update Category
-    // public function updateRules(): array
-    // {
-    //     $id = $this->id;
-    //     return [
-    //         'name' => 'required||string|min:1|max:100|unique:category,name,'.$id,
-    //         'status' => 'integer|max:2'
-    //     ];
-    // }
-    // public function updateFilter()
-    // {
-    //     return $this->only([
-    //         'name',
-    //         'status'
-    //     ]);
-    // }
+    //Update Cart
+    public function updateRules(): array
+    {
+        $id = $this->id;
+        return[
+            'quantity' => 'numeric',
+        ];
+    }
+    public function updateFilter()
+    {
+        return $this->only([
+            'quantity',
+        ]);
+    }
 }

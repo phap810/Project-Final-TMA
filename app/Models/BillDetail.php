@@ -9,7 +9,7 @@ class BillDetail extends Model
 {
     use HasFactory;
     protected $table = 'bills_detail';
-    protected $fillable = ['id_bill', 'id_product', 'amount', 'price'];
+    protected $fillable = ['id_bill', 'id_product_size_color', 'amount', 'price'];
     protected $guarded = ['created_at', 'updated_at'];
     public    $timestamps = true;
 }

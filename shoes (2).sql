@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2021 lúc 05:15 AM
+-- Thời gian đã tạo: Th4 16, 2021 lúc 12:05 PM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -34,9 +34,17 @@ CREATE TABLE `bill` (
   `payment` varchar(10) NOT NULL,
   `dateorder` date NOT NULL,
   `note` text NOT NULL,
+  `status` int(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `bill`
+--
+
+INSERT INTO `bill` (`id`, `customer_id`, `total`, `payment`, `dateorder`, `note`, `status`, `created_at`, `updated_at`) VALUES
+(27, 45, 480000, 'Tiền mặt', '2021-04-16', 'Vui lòng gửi đúng mẫu mã size giày', 1, '2021-04-16 03:04:55', '2021-04-16 03:04:55');
 
 -- --------------------------------------------------------
 
@@ -47,13 +55,20 @@ CREATE TABLE `bill` (
 CREATE TABLE `bills_detail` (
   `id` bigint(20) NOT NULL,
   `id_bill` bigint(20) NOT NULL,
-  `id_product` bigint(20) NOT NULL,
   `id_product_size_color` bigint(20) NOT NULL,
   `amount` int(10) NOT NULL,
   `price` float NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `bills_detail`
+--
+
+INSERT INTO `bills_detail` (`id`, `id_bill`, `id_product_size_color`, `amount`, `price`, `created_at`, `updated_at`) VALUES
+(5, 27, 26, 3, 100000, '2021-04-16 03:04:55', '2021-04-16 03:04:55'),
+(6, 27, 23, 6, 30000, '2021-04-16 03:04:55', '2021-04-16 03:04:55');
 
 -- --------------------------------------------------------
 
@@ -131,10 +146,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `email`, `name`, `phone`, `address`, `created_at`, `updated_at`) VALUES
-(1, 'vophamtandoan@gmail.com', 'Võ Phạm Tấn Đoan', '0337338920', 'Khu phố 4, phường Hòa Vinh, thị xã Đông Hòa, tỉnh Phú Yên', NULL, NULL),
-(3, 'admin@gmail.com', 'Võ Phạm Tấn Đoan', '0337338920', 'khu phố 4, phường Hòa Vinh, thị xã Đông Hòa, tỉnh Phú Yên', '2021-04-12 19:40:58', '2021-04-12 19:40:58'),
-(4, 'trannhatlinh@gmail.com', 'Trần nhật Linh', '0337338920', 'Bình Định', '2021-04-12 19:41:50', '2021-04-12 19:41:50'),
-(5, 'trannhatlinh@gmail.com', 'Trần nhật Linh', '0337338920', 'Bình Định', '2021-04-12 20:30:22', '2021-04-12 20:30:22');
+(45, 'doan@gmail.com', 'Võ Phạm Tấn Đoan', '0337338920', 'Phú Yên', '2021-04-16 03:04:55', '2021-04-16 03:04:55');
 
 -- --------------------------------------------------------
 
@@ -251,7 +263,6 @@ INSERT INTO `product_size_color` (`id`, `product_id`, `size_id`, `color_id`, `am
 (21, 227, 125, 140, 250, '2021-04-11 19:07:57', '2021-04-11 19:07:57'),
 (22, 227, 126, 139, 250, '2021-04-11 19:07:57', '2021-04-11 19:07:57'),
 (23, 228, 125, 140, 250, '2021-04-11 19:08:25', '2021-04-11 19:08:25'),
-(24, 228, 126, 139, 250, '2021-04-11 19:08:25', '2021-04-11 19:08:25'),
 (25, 229, 126, 139, 50, '2021-04-11 23:15:52', '2021-04-11 23:15:52'),
 (26, 229, 125, 141, 50, '2021-04-11 23:15:52', '2021-04-11 23:15:52');
 
@@ -390,7 +401,6 @@ ALTER TABLE `bill`
 ALTER TABLE `bills_detail`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_bill` (`id_bill`),
-  ADD KEY `id_product` (`id_product`),
   ADD KEY `id_product_size_color` (`id_product_size_color`);
 
 --
@@ -489,13 +499,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `bills_detail`
 --
 ALTER TABLE `bills_detail`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `category`
@@ -513,7 +523,7 @@ ALTER TABLE `color`
 -- AUTO_INCREMENT cho bảng `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
@@ -578,7 +588,6 @@ ALTER TABLE `bill`
 --
 ALTER TABLE `bills_detail`
   ADD CONSTRAINT `bills_detail_ibfk_1` FOREIGN KEY (`id_bill`) REFERENCES `bill` (`id`),
-  ADD CONSTRAINT `bills_detail_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`),
   ADD CONSTRAINT `bills_detail_ibfk_3` FOREIGN KEY (`id_product_size_color`) REFERENCES `product_size_color` (`id`);
 
 --
