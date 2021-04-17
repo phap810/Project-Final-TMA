@@ -40,7 +40,6 @@ class BaseResource extends JsonResource
         ];
     }
 
-    //note
     public function sendResponse($result, $message)
     {
         $response = [

@@ -73,10 +73,8 @@ Route::namespace('Api')->group(function(){
 
     //Bill
     Route::post('bill', 'BillController@store')->name('bill.store');
-    //Route::get('bill', 'BillController@search')->name('bill.search');
-    //Route::get('bill/{id}', 'BillController@show')->name('bill.show');
-    //Route::put('bill/{id}', 'BillController@update')->name('bill.update');
-    //Route::delete('bill/{id}', 'BillController@destroy')->name('bill.destroy');
+    Route::put('bill/{id}', 'BillController@update')->name('bill.update');
+    Route::delete('bill/{id}', 'BillController@destroy')->name('bill.destroy');
 
     //Cart
     Route::post('add-to-cart', 'CartController@add')->name('cart.add');
