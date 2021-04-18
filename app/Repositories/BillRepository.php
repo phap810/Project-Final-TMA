@@ -12,6 +12,19 @@ use Config;
 
 class BillRepository
 {
+    public function search($inputs)
+    {
+       //dd(323);
+        return Bill::get();
+        when(isset($inputs['id']), function ($query) use ($inputs) {
+            return $query->where('id', $inputs['id']);
+        })
+        ->when(isset($inputs['id_bill']), function ($query) use ($inputs) {
+            return $query->where('id_bill', 'LIKE', '%' . $inputs['id_bill'] . '%');
+        })
+        ->orderBy('id', 'desc')
+        ->paginate(10);
+    }
     public function store($inputs, $customer_id, $cart)
     {
         return Bill::create([

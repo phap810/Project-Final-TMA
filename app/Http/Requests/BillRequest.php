@@ -18,11 +18,28 @@ class BillRequest extends FormRequest
 
     public function rules()
     {
-        if($this->isMethod('post')){
+        if($this->isMethod('get')){
+            return $this->searchRules();
+        }elseif($this->isMethod('post')){
             return $this->storeRules();
         }elseif($this->isMethod('put')){
             return $this->updateRules();
         }
+    }
+    //Search Category
+    public function searchRules():array
+    {
+        return [
+            'id' => 'integer|nullable',
+            'id_bill' =>'integer|nullable',
+        ];
+    }
+    public function searchFilter()
+    {
+        return $this->only([
+            'id',
+            'id_bill'
+        ]);
     }
 
     //Store Customer

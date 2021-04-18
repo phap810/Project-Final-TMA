@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Resources\bill\BillResource;
 use App\Http\Resources\bill\BillDetailResource;
 use App\Http\Resources\bill\BillDetailCollection;
+use App\Http\Resources\bill\BillCollection;
 
 class BillController
 {
@@ -24,6 +25,10 @@ class BillController
     {
         $this->billRepository = $billRepository;
         $this->customerRepository = $customerRepository;
+    }
+    public function search(BillRequest $request)
+    {
+        return new BillCollection($this->billRepository->search($request->searchFilter()));
     }
     public function store(CustomerRequest $customerRequest, BillRequest $billRequest)
     {
@@ -71,4 +76,5 @@ class BillController
         $request->session()->forget('bill');
         return $destroy;
     }
+    
 }
