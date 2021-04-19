@@ -14,6 +14,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
+use App\Models\SessionUser;
+
 class UserController extends Controller
 {
 
@@ -65,6 +67,7 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
+        // dd(Auth::user());
         if(Auth::attempt($request->filter())){
             $checkTokenExit = $this->userRepository->get();
             if(empty($checkTokenExit)){
@@ -74,6 +77,30 @@ class UserController extends Controller
                 $userSession = $checkTokenExit;
                 return $userSession;
             } 
+        }else{
+            return redirect()->back()->with('thông báo', 'Đăng nhập không thành công');
         }
     }
+    // // public function refresh(Request $request)
+    // // {
+    // //     $token = $request->header('token');
+    // //     $checkTokenIsValid = SessionUser::where('token', $token)->first();
+    // //     if(!empty($checkTokenIsValid)){
+    // //         if($checkTokenIsValid->token_expried < time()){
+    // //             $checkTokenIsValid->update()
+    // //         }
+    // //     }
+    // // }
+    // public function delete(Request $request)
+    // {
+    //     $token = $request->header('token');
+    //     $checkTokenIsValid = SessionUser::where('token', $token)->first();
+    //     if(!empty($checkTokenIsValid)){
+    //         $checkTokenIsValid->delete();
+    //     }
+    //     return response()->json([
+    //         'code' => 200,
+    //         'message' => 'delete token sucess'
+    //     ],200);
+    // }
 }

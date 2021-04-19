@@ -14,15 +14,17 @@ class BillRepository
 {
     public function search($inputs)
     {
-       //dd(323);
-        return Bill::get();
-        when(isset($inputs['id']), function ($query) use ($inputs) {
-            return $query->where('id', $inputs['id']);
+        return Bill::join('customer', 'bill.customer_id', '=', 'customer.id')
+        ->select('bill.id as id', 'customer.name as customer_id',
+                'bill.total as total', 'bill.payment as payment',
+                'bill.dateorder as dateorder', 'bill.note as note', 'bill.status as status')
+        ->when(isset($inputs['bill.id']), function ($query) use ($inputs) {
+            return $query->where('bill.id', $inputs['id']);
         })
-        ->when(isset($inputs['id_bill']), function ($query) use ($inputs) {
-            return $query->where('id_bill', 'LIKE', '%' . $inputs['id_bill'] . '%');
+        ->when(isset($inputs['bill.dateorder']), function ($query) use ($inputs) {
+            return $query->where('bill.dateorder', 'LIKE', '%' . $inputs['dateorder'] . '%');
         })
-        ->orderBy('id', 'desc')
+        ->orderBy('bill.id', 'desc')
         ->paginate(10);
     }
     public function store($inputs, $customer_id, $cart)

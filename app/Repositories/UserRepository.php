@@ -93,4 +93,20 @@ class UserRepository
             'user_id' =>auth()->id()
         ]);
     }
+
+    public function updateToken($id)
+    {
+        return SessionUser::find($id)->update([
+            'token' => Str::random(40),
+            'refresh_token' => Str::random(40),
+            'token_expried' => date('Y-m-d H:i:s', strtotime('+30 day')),
+            'refresh_token_expried' => date('Y-m-d H:i:s', strtotime('+360 day')),
+            'user_id' =>auth()->id()
+        ]);
+    }
+
+    public function deleteToken($id)
+    {
+        return SessionUser::find($id)->delete();
+    }
 }

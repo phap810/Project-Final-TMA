@@ -186,4 +186,15 @@ class ProductRepository
         ];
     }
 
+    public function showProductPage($id)
+    {
+        return Product::where('supplier_id', '=', $id)
+        ->orderBy('name', 'desc')
+        ->paginate(10);
+    }
+    public function get()
+    {
+        return Product::orderBy('sale', 'desc')->paginate(10);
+    }
+    
 }
