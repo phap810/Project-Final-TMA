@@ -27,22 +27,7 @@ class ProductController extends Controller
 
     public function search(ProductRequest $request)
     {
-        
-        // $token = $request->header('token');
-        // $checkTokenIsValid = SessionUser::where('token', $token)->first();
-        // if(empty($token)){
-        //     return response()->json([
-        //         'code' => 401,
-        //         'message' => 'Token không được gửi thông qua header'
-        //     ], 401);
-        // }elseif(empty($checkTokenIsValid)){
-        //     return response()->json([
-        //         'code' => 401,
-        //         'message' => 'Token không hợp lệ'
-        //     ], 401);
-        // }else{
-            return new ProductCollection($this->productRepository->search($request->searchFilter()));
-        //}   
+        return new ProductCollection($this->productRepository->search($request->searchFilter()));
     }
 
     public function show($id)

@@ -12,25 +12,29 @@ use App\Repositories\BillRepository;
 use App\Http\Requests\BillRequest;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\bill\BillResource;
+use App\Http\Resources\bill\StatisticalResource;
 use App\Http\Resources\bill\BillDetailResource;
 use App\Http\Resources\bill\BillDetailCollection;
 use App\Http\Resources\bill\BillCollection;
+use App\Repositories\ProductRepository;
 
 class BillController
 {
     private $billRepository;
     private $customerRepository;
+    private $productRepository;
 
-    public function __construct(BillRepository $billRepository, CustomerRepository $customerRepository, Request $request)
+    public function __construct(BillRepository $billRepository, CustomerRepository $customerRepository, ProductRepository $productRepository)
     {
         $this->billRepository = $billRepository;
         $this->customerRepository = $customerRepository;
+        $this->productRepository = $productRepository;
     }
     public function search(BillRequest $request)
     {
         return new BillCollection($this->billRepository->search($request->searchFilter()));
     }
-    public function store(CustomerRequest $customerRequest, BillRequest $billRequest)
+    public function store(Request $request, CustomerRequest $customerRequest, BillRequest $billRequest)
     {
         $items = session('cart');
         $totalPrice      = 0;
@@ -51,14 +55,20 @@ class BillController
                 foreach($cart['items'] as $rowCart){
                     $PSCdata = $this->billRepository->showPSC($rowCart);
                     $billDetail = new BaseResource($this->billRepository->storeBillDetail($bill->id, $PSCdata, $rowCart));   
+                    $this->productRepository->updateAmountProduct($rowCart);
                 }
                 $dataBillDetail = new BillDetailCollection($this->billRepository->getBillDetail($bill->id));
-                // unset($items[$id]);
-                // $request->session()->put('cart', $items);
+                $request->session()->forget('cart');
                 return [$bill, $dataBillDetail];
             }
                 
        }
+    }
+    public function show($id)
+    {
+        $billDetail = new BillDetailCollection($this->billRepository->showBillDetail($id));
+        $bill = new BillResource($this->billRepository->showBill($id));
+        return [$bill, $billDetail];
     }
     public function update($id)
     {
@@ -76,5 +86,8 @@ class BillController
         $request->session()->forget('bill');
         return $destroy;
     }
-    
+    public function statistical()
+    {
+        return response()->json($this->billRepository->statistical(), 200);
+    }
 }

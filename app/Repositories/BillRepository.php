@@ -86,4 +86,31 @@ class BillRepository
         return Customer::findOrFail(session('bill'))
             ->delete();
     }
+
+    public function statistical()
+    { 
+        $statusOne      = Bill::where('status', '=', 1)->count();
+        $statusTwo      = Bill::where('status', '=', 2)->count();
+        $statusThree    = Bill::where('status', '=', 3)->count();
+        $sum            = Bill::where('status', '=', 3)->sum('total');
+        return [
+            'statusOne'     => $statusOne,
+            'statusTwo'     => $statusTwo,
+            'statusThree'   => $statusThree,
+            'sum'           => $sum
+        ];
+    }
+
+    public function showBillDetail($id)
+    {
+        return BillDetail::where('id_bill', $id)
+            // ->join('product_size_color ', 'bill.id_product_size_color', '=', 'product_size_color.id')
+            // ->join()
+            ->orderBy('id', 'desc')
+            ->paginate();
+    }
+    public function showBill($id)
+    {
+        return Bill::findOrFail($id);
+    }
 }

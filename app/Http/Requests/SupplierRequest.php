@@ -58,7 +58,7 @@ class SupplierRequest extends FormRequest
         ]);
     }
 
-    // //Update Supplier
+    //Update Supplier
     public function updateRules(): array
     {
         $id = $this->id;

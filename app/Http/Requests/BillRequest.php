@@ -46,15 +46,13 @@ class BillRequest extends FormRequest
     public function storeRules(): array
     {
         return [
-            'note'   => 'string|min:0|max:255',
             'payment' => 'required|string|min:0|max:50',
-            'note' => 'string|min:0|max:255'
+            //'note' => 'nullable'
         ];
     }
     public function storeFilter()
     {
         return $this->only([
-            'note',
             'payment',
             'note'
         ]);

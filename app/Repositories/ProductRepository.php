@@ -197,4 +197,15 @@ class ProductRepository
         return Product::orderBy('sale', 'desc')->paginate(10);
     }
     
+    public function updateAmountProduct($cart)
+    {
+        $UPSC = ProductSizeColor::where('product_id', $cart['id'])
+                ->where('size_id', $cart['size_id'])
+                ->where('color_id', $cart['color_id'])
+                ->get();
+        return ProductSizeColor::findOrFail($UPSC[0]['id'])
+            ->update([
+                'amount' => $UPSC[0]['amount']-$cart['quantity']
+            ]);
+    }
 }

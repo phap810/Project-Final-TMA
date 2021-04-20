@@ -50,7 +50,10 @@ class ProductRequest extends FormRequest
             'sale'          => 'required|integer|max:100',
             'status'        => 'integer|min:0|max:2',
             'supplier_id'   => 'required|integer',
-            'category_id'   => 'required|integer'
+            'category_id'   => 'required|integer',
+            'size_id'       => 'required',
+            'color_id'      => 'required',
+            'amount'        => 'required'
         ];
     }
     public function storeFilter()
@@ -64,7 +67,10 @@ class ProductRequest extends FormRequest
             'sale',
             'status',
             'supplier_id',
-            'category_id'
+            'category_id',
+            'size_id',
+            'color_id',
+            'amount'
         ]);
     }
 
@@ -79,9 +85,12 @@ class ProductRequest extends FormRequest
             'import_price'  => 'required|integer|min:0',
             'export_price'  => 'required|integer:min:0',
             'sale'          => 'required|integer|max:100',
-            'status'        => 'required|integer|min:0|max:2',
+            'status'        => 'required|integer',
             'supplier_id'   => 'required|integer',
-            'category_id'   => 'required|integer'
+            'category_id'   => 'required|integer',
+            'size_id'       => 'required',
+            'color_id'      => 'required',
+            'amount'        => 'required'
         ];
     }
     public function updateFilter()
@@ -96,7 +105,10 @@ class ProductRequest extends FormRequest
             'sale',
             'status',
             'supplier_id',
-            'category_id'
+            'category_id',
+            'size_id',
+            'color_id',
+            'amount'
         ]);
     }
 }

@@ -8,7 +8,6 @@ use App\Http\Resources\category\CategoryResource;
 use App\Http\Resources\category\CategoryCollection;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\BaseResource;
-use Session;
 
 class CategoryController extends Controller
 {
