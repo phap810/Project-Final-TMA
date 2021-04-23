@@ -77,17 +77,17 @@ class UserRequest extends FormRequest
     {
         $id = $this->id;
         return [
-            'code'              => 'required|string|min:1|max:100|unique:users,code,'.$id,
-            'name'              => 'required|min:2|max:50',
-            'dateofbirth'       => 'required|date',
-            'phone'             => 'required|numeric',
-            'address'           => 'required|min:1|max:200',
-            'email'             => 'required|email|unique:users,email,'.$id,
-            'img'               => 'required',
-            'password'          => 'string|min:6|max:50|nullable',
-            'confirmpassword'   => 'string|min:6|max:50|same:password|nullable',
-            'role'              => 'required|max:2',
-            'status'            => 'required|max:2',
+            // 'code'              => 'required|string|min:1|max:100|unique:users,code,'.$id,
+            // 'name'              => 'required|min:2|max:50',
+            // 'dateofbirth'       => 'required|date',
+            // 'phone'             => 'required|numeric',
+            // 'address'           => 'required|min:1|max:200',
+            // 'email'             => 'required|email|unique:users,email,'.$id,
+            // 'img'               => 'required',
+            // 'password'          => 'string|min:6|max:50|nullable',
+            // 'confirmpassword'   => 'string|min:6|max:50|same:password|nullable',
+            // 'role'              => 'required|max:2',
+            // 'status'            => 'required|max:2',
         ];
     }
     public function updateFilter()

@@ -10,6 +10,7 @@ use App\Http\Resources\user\UserCollection;
 use App\Http\Resources\user\UserResource;
 use App\Http\Resources\BaseResource;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserProfileRequest;
 
 class UserController extends Controller
 {
@@ -57,8 +58,8 @@ class UserController extends Controller
             if($getdataUser->img == $request->img){
                 return new BaseResource($this->userRepository->updateNoPass($request->updateFilter(), $id));
             }else{
-                dd(2);
                 $image          = $request->file('img');
+                // dd($image);
                 $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
                 $image->move(public_path('/uploads/user/'),$newNamefile);
                 $updateUser = new BaseResource($this->userRepository->updateNewNoPass($request->updateFilter(), $id, $newNamefile));
@@ -72,5 +73,14 @@ class UserController extends Controller
     public function destroy($id)
     {
         return new BaseResource($this->userRepository->destroy($id));
+    }
+
+    public function showProfile($id)
+    {
+        return new UserResource($this->userRepository->show($id));
+    }
+    public function updateProfile(UserProfileRequest $request, $id)
+    {
+        return new BaseResource($this->userRepository->updateProfile($request->updateFilter(), $id));
     }
 }

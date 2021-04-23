@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Repositories\ProductRepository;
 use App\Http\Resources\product\ProductResource;
 use App\Http\Resources\product\ProductCollection;
+use App\Http\Resources\product\SizeCollection;
+use App\Http\Resources\product\ColorCollection;
 
 class HomeController extends Controller
 {
@@ -16,12 +18,12 @@ class HomeController extends Controller
     {
         $this->productRepository = $productRepository;
     }
-    public function show($id)
+    public function getSize()
     {
-        return new ProductCollection($this->productRepository->showProductPage($id));
+        return new SizeCollection($this->productRepository->getSize());
     }
-    public function getAll()
+    public function getColor()
     {
-        return new ProductCollection($this->productRepository->get());
+        return new ColorCollection($this->productRepository->getColor());
     }
 }

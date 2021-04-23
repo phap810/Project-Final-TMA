@@ -48,10 +48,13 @@ class ProductRepository
     //destroy
     public function destroy($id)
     {
-        ProductSizeColor::where('product_id', $id)
-            ->delete();
         return Product::findOrFail($id)
-            ->delete();
+            ->update(['status' => 2]);
+    }
+    public function updateStatus($id)
+    {
+        return Product::findOrFail($id)
+            ->update(['status' => 1]);
     }
     //store
     public function store($inputs, $newNamefile)
@@ -108,21 +111,21 @@ class ProductRepository
             ]);
     }
     //updateImg
-    public function updateImg($inputs, $newNamefile, $id)
-    {
-        return Product::findOrFail($id)
-            ->update([
-                'name'          => $inputs['name'],
-                'img'           => $newNamefile,
-                'note'          => $inputs['note'],
-                'import_price'  => $inputs['import_price'],
-                'export_price'  => $inputs['export_price'],
-                'sale'          => $inputs['sale'],
-                'supplier_id'   => $inputs['supplier_id'],
-                'category_id'   => $inputs['category_id'],
-                'status'        => $inputs['status']
-            ]);
-    }
+    // public function updateImg($inputs, $newNamefile, $id)
+    // {
+    //     return Product::findOrFail($id)
+    //         ->update([
+    //             'name'          => $inputs['name'],
+    //             'img'           => $newNamefile,
+    //             'note'          => $inputs['note'],
+    //             'import_price'  => $inputs['import_price'],
+    //             'export_price'  => $inputs['export_price'],
+    //             'sale'          => $inputs['sale'],
+    //             'supplier_id'   => $inputs['supplier_id'],
+    //             'category_id'   => $inputs['category_id'],
+    //             'status'        => $inputs['status']
+    //         ]);
+    // }
     //showPSC
     public function showPSC($id)
     {
@@ -207,5 +210,14 @@ class ProductRepository
             ->update([
                 'amount' => $UPSC[0]['amount']-$cart['quantity']
             ]);
+    }
+
+    public function getSize()
+    {
+        return Size::orderBy('size', 'asc')->paginate();
+    }
+    public function getColor()
+    {
+        return Color::orderBy('color', 'desc')->paginate();
     }
 }

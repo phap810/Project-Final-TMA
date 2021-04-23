@@ -41,7 +41,7 @@ class ProductController extends Controller
         if($request->hasFile('img')){
             $image          = $request->file('img');
             $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('/uploads'),$newNamefile);
+            $image->move(public_path('/uploads/product/'),$newNamefile);
             $product        = new BaseResource($this->productRepository->store($request->storeFilter(), $newNamefile));
             $product_id     = $product->id;
             
@@ -70,9 +70,9 @@ class ProductController extends Controller
     public function update(ProductRequest $request, ProductSizeColorRequest $requestSizeColor, $id)
     {
         //getDataProduct
-        $getDataProduct = new ProductResource($this->productRepository->show($id));
+        //$getDataProduct = new ProductResource($this->productRepository->show($id));
         //Update Product
-        if($getDataProduct->img == $request->img){
+        //if($getDataProduct->img == $request->img){
                 $Updateproduct = new BaseResource($this->productRepository->update($request->updateFilter(), $id));
                 if($Updateproduct == true){ 
                     //Product-Size-Color
@@ -99,51 +99,54 @@ class ProductController extends Controller
                             $this->productRepository->amount($id, $totalAmount);
                         }
                     }
-                }
+                //}
             return $Updateproduct;
-        }else{
-            //Product
-            if($request->hasFile('img')){
-                $image          = $request->file('img');
-                $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
-                $image->move(public_path('/uploads'),$newNamefile);
-                unlink("uploas/".$getDataProduct->img);
-                $Updateproduct        = new BaseResource($this->productRepository->updateImg($request->updateFilter(), $newNamefile, $id));
-                if($Updateproduct == true){ 
-                    //Product-Size-Color
-                    if(isset($requestSizeColor->size_id) && isset($requestSizeColor->color_id) && isset($requestSizeColor->amount)){
-                        //getdata PSC
-                        $productPSC = $this->productRepository->showPSC($id);
-                        $idPSC = [];
-                        foreach($productPSC as $row){
-                           array_push($idPSC, $row['id']);
-                        }
-                        $size = $requestSizeColor->size_id;
-                        $color = $requestSizeColor->color_id; 
-                        $amount = $requestSizeColor->amount;
-                        $arrlength = count($amount);
-                        for($x = 0; $x < $arrlength; $x++) {
-                            $data = array('id'=>$idPSC[$x], 'size'=>$size[$x], 'color'=> $color[$x], 'amount'=>$amount[$x]);
-                            $PSC = new BaseResource($this->productRepository->updatePSC($data));
-                        }
-                        //Amount Product
-                        if($PSC == true){
-                            $totalAmount = $this->productRepository->sum($id);
-                            $this->productRepository->amount($id, $totalAmount);
-                        }
-                    }
-                }
-                return $Updateproduct;
-            }
         }
+        // else{
+        //     //Product
+        //     if($request->hasFile('img')){
+        //         $image          = $request->file('img');
+        //         $newNamefile    = rand().'.'.$image->getClientOriginalExtension();
+        //         $image->move(public_path('/uploads/product/'),$newNamefile);
+        //         unlink("uploas/product/".$getDataProduct->img);
+        //         $Updateproduct        = new BaseResource($this->productRepository->updateImg($request->updateFilter(), $newNamefile, $id));
+        //         if($Updateproduct == true){ 
+        //             //Product-Size-Color
+        //             if(isset($requestSizeColor->size_id) && isset($requestSizeColor->color_id) && isset($requestSizeColor->amount)){
+        //                 //getdata PSC
+        //                 $productPSC = $this->productRepository->showPSC($id);
+        //                 $idPSC = [];
+        //                 foreach($productPSC as $row){
+        //                    array_push($idPSC, $row['id']);
+        //                 }
+        //                 $size = $requestSizeColor->size_id;
+        //                 $color = $requestSizeColor->color_id; 
+        //                 $amount = $requestSizeColor->amount;
+        //                 $arrlength = count($amount);
+        //                 for($x = 0; $x < $arrlength; $x++) {
+        //                     $data = array('id'=>$idPSC[$x], 'size'=>$size[$x], 'color'=> $color[$x], 'amount'=>$amount[$x]);
+        //                     $PSC = new BaseResource($this->productRepository->updatePSC($data));
+        //                 }
+        //                 //Amount Product
+        //                 if($PSC == true){
+        //                     $totalAmount = $this->productRepository->sum($id);
+        //                     $this->productRepository->amount($id, $totalAmount);
+        //                 }
+        //             }
+        //         }
+        //         return $Updateproduct;
+        //     }
+        // }
     }
     
     public function destroy($id)
     {
         $getdata = new ProductResource($this->productRepository->show($id));
-        $img = $getdata->img;
-        unlink("uploads/".$img); 
-        return new BaseResource($this->productRepository->destroy($id));
+        if($getdata->status == 1){
+            return new BaseResource($this->productRepository->destroy($id));
+        }else{
+            return new BaseResource($this->productRepository->updateStatus($id));
+        }
     }
 
     public function category($id)

@@ -24,7 +24,7 @@ class BillRepository
         ->when(isset($inputs['bill.dateorder']), function ($query) use ($inputs) {
             return $query->where('bill.dateorder', 'LIKE', '%' . $inputs['dateorder'] . '%');
         })
-        ->orderBy('bill.id', 'desc')
+        ->orderBy('bill.dateorder', 'desc')
         ->paginate(10);
     }
     public function store($inputs, $customer_id, $cart)

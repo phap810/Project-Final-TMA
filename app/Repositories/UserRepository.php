@@ -162,4 +162,9 @@ class UserRepository
         $session = SessionUser::where('token', $token)->first();
         return User::findOrFail($session->user_id);
     }
+    public function updateProfile($inputs, $id)
+    {
+        return User::findOrFail($id)
+                ->update($inputs);
+    }
 }

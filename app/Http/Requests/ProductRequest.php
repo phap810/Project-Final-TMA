@@ -42,18 +42,18 @@ class ProductRequest extends FormRequest
     public function storeRules(): array
     {
         return [
-            'name'          => 'required|unique:product|string|min:1|max:255',
-            'img'           => 'required|file|image',
-            'note'          => 'required|string|min:1|max:1000',
-            'import_price'  => 'required|integer|min:0',
-            'export_price'  => 'required|integer:min:0',
-            'sale'          => 'required|integer|max:100',
-            'status'        => 'integer|min:0|max:2',
-            'supplier_id'   => 'required|integer',
-            'category_id'   => 'required|integer',
-            'size_id'       => 'required',
-            'color_id'      => 'required',
-            'amount'        => 'required'
+            // 'name'          => 'required|unique:product|string|min:1|max:255',
+            // 'img'           => 'required|file|image',
+            // 'note'          => 'required|string|min:1|max:1000',
+            // 'import_price'  => 'required|integer|min:0',
+            // 'export_price'  => 'required|integer:min:0',
+            // 'sale'          => 'required|integer|max:100',
+            // 'status'        => 'integer|min:0|max:2',
+            // 'supplier_id'   => 'required|integer',
+            // 'category_id'   => 'required|integer',
+            // 'size_id'       => 'required',
+            // 'color_id'      => 'required',
+            // 'amount'        => 'required'
         ];
     }
     public function storeFilter()
@@ -77,21 +77,21 @@ class ProductRequest extends FormRequest
     //Update Product
     public function updateRules(): array
     {
-        $id = $this->id;
-        return [
-            'name'          => 'required|string|min:1|max:255|unique:product,name,'.$id,
-            'img'           => 'required|file|image',
-            'note'          => 'required|string|min:1|max:1000',
-            'import_price'  => 'required|integer|min:0',
-            'export_price'  => 'required|integer:min:0',
-            'sale'          => 'required|integer|max:100',
-            'status'        => 'required|integer',
-            'supplier_id'   => 'required|integer',
-            'category_id'   => 'required|integer',
-            'size_id'       => 'required',
-            'color_id'      => 'required',
-            'amount'        => 'required'
-        ];
+        // $id = $this->id;
+        // return [
+        //     'name'          => 'required|string|min:1|max:255|unique:product,name,'.$id,
+        //     'img'           => 'required|file|image',
+        //     'note'          => 'required|string|min:1|max:1000',
+        //     'import_price'  => 'required|integer|min:0',
+        //     'export_price'  => 'required|integer:min:0',
+        //     'sale'          => 'required|integer|max:100',
+        //     'status'        => 'required|integer',
+        //     'supplier_id'   => 'required|integer',
+        //     'category_id'   => 'required|integer',
+        //     'size_id'       => 'required',
+        //     'color_id'      => 'required',
+        //     'amount'        => 'required'
+        //];
     }
     public function updateFilter()
     {

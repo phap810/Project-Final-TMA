@@ -32,6 +32,10 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
      Route::get('bill', 'BillController@search')->name('bill.search');
      Route::post('bill', 'BillController@store')->name('bill.store');
 
+     //sizecolor
+     Route::get('size', 'HomeController@getSize')->name('size.show');
+     Route::get('color', 'HomeController@getColor')->name('color.show');
+
      //WEB PAGE
      //Product->Supplier
      Route::get('home/{id}', 'HomeController@show')->name('home.show');
@@ -50,8 +54,8 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['middleware' => ['auth']], function () {
-        Route::group(['middleware' => ['role']], function () {
+    //Route::group(['middleware' => ['auth']], function () {
+        //Route::group(['middleware' => ['role']], function () {
             //Users
             Route::get('user', 'UserController@search')->name('user.search');
             Route::post('user', 'UserController@store')->name('user.store');
@@ -78,8 +82,11 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
             Route::delete('product/{id}', 'ProductController@destroy')->name('product.destroy');
 
             Route::get('category', 'CategoryController@search')->name('category.search');
-        });
-        
+        //});
+        //User
+        Route::get('userprofile/{id}', 'usercontroller@showprofile')->name('user.showprofile');
+        Route::put('userprofile/{id}', 'usercontroller@updateprofile')->name('user.updateprofile');
+ 
         Route::get('supplier', 'SupplierController@search')->name('supplier.search');
         Route::get('product', 'ProductController@search')->name('product.search');
 
@@ -93,5 +100,5 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
         Route::delete('bill/{id}', 'BillController@destroy')->name('bill.destroy');
         Route::get('bill/{id}', 'BillController@show')->name('bill.show');
         Route::get('statistical', 'BillController@statistical')->name('bill.statistical');
-    });
+   // });
 });
