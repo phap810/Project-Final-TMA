@@ -35,7 +35,7 @@ class ProductController extends Controller
         return new ProductResource($this->productRepository->show($id));
     }
 
-    public function store(ProductRequest $request, ProductSizeColorRequest $requestSizeColor)
+    public function store(ProductRequest $request)//, ProductSizeColorRequest $requestSizeColor)
     {
         //Product
         if($request->hasFile('img')){
